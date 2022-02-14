@@ -46,12 +46,20 @@ class TicTacToe:
             row = int(input("Enter a row: "))
             col = int(input("Enter a column: "))
         self.place_player(player, row, col)
-        self.print_board()
 
     def take_turn(self, player):
         # TODO: Simply call the take_manual_turn function
         print(player + "'s Turn")
-        self.take_manual_turn(player)
+        if player == 'X':
+            self.take_manual_turn(player)
+        if player == 'O':
+            self.take_random_turn(player)
+
+    def take_random_turn(self, player):
+        x, y = -1, -1
+        while not self.is_valid_move(x, y):
+            x, y = random.randint(0,3), random.randint(0,3)
+        self.board[x][y] = player
 
     def check_col_win(self, player):
         # TODO: Check col win
@@ -94,8 +102,11 @@ class TicTacToe:
     def play_game(self):
         # TODO: Play game
         player = "X"
+        self.print_instructions()
+        self.print_board()
         while True:
             self.take_turn(player)
+            self.print_board()
             if self.check_win("X"):
                 print("X wins!")
                 break
