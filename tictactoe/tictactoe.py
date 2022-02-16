@@ -33,8 +33,49 @@ class TicTacToe:
 
     def place_player(self, player, row, col):
         # TODO: Place the player on the board
-        if self.is_valid_move(row, col):
-            self.board[row][col] = player
+        #if self.is_valid_move(row, col):
+        self.board[row][col] = player
+
+    def minimax(self, player):
+        #self.print_board()
+        #print()
+        if self.check_win("O"):
+            return (10, None, None)
+        if self.check_tie():
+            return (0, None, None)
+        if self.check_win("X"):
+            return (-10, None, None)
+
+        if player == "O":
+            best = -10
+            opt_row = -1
+            opt_col = -1
+            for row in range(3):
+                for col in range(3):
+                    if self.is_valid_move(row, col):
+                        self.place_player("O", row, col)
+                        score = self.minimax("X")[0]
+                        if best < score:
+                            best = score
+                            opt_row = row
+                            opt_col = col
+                        self.place_player("-", row, col)
+            return (best, opt_row, opt_col)
+        if player == "X":
+            worst = 10
+            opt_row = -1
+            opt_col = -1
+            for row in range(3):
+                for col in range(3):
+                    if self.is_valid_move(row, col):
+                        self.place_player("X", row, col)
+                        score = self.minimax("O")[0]
+                        if worst > score:
+                            worst = score
+                            opt_row = row
+                            opt_col = col
+                        self.place_player("-", row, col)
+            return (worst, opt_row, opt_col)
 
     def take_manual_turn(self, player):
         # TODO: Ask the user for a row, col until a valid response
@@ -53,13 +94,21 @@ class TicTacToe:
         if player == 'X':
             self.take_manual_turn(player)
         if player == 'O':
-            self.take_random_turn(player)
+            self.take_minimax_turn(player)
 
     def take_random_turn(self, player):
         x, y = -1, -1
         while not self.is_valid_move(x, y):
             x, y = random.randint(0,3), random.randint(0,3)
         self.board[x][y] = player
+
+    def take_minimax_turn(self, player):
+        score, row, col = self.minimax(player)
+        print(score, row, col)
+        if self.is_valid_move(row, col):
+            self.place_player(player, row, col)
+        else:
+            print("error")
 
     def check_col_win(self, player):
         # TODO: Check col win
