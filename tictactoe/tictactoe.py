@@ -36,45 +36,56 @@ class TicTacToe:
         #if self.is_valid_move(row, col):
         self.board[row][col] = player
 
-    def minimax(self, player):
+    def minimax(self, player, depth):
         #self.print_board()
         #print()
+
         if self.check_win("O"):
+            #print("win O")
             return (10, None, None)
         if self.check_tie():
+            #print("tie")
             return (0, None, None)
         if self.check_win("X"):
+            #print("win X")
             return (-10, None, None)
+        if depth == 0:
+            return (0, None, None)
 
         if player == "O":
-            best = -10
+            best = -100
             opt_row = -1
             opt_col = -1
             for row in range(3):
                 for col in range(3):
                     if self.is_valid_move(row, col):
+
                         self.place_player("O", row, col)
-                        score = self.minimax("X")[0]
+                        score = self.minimax("X", depth - 1)[0]
                         if best < score:
                             best = score
                             opt_row = row
                             opt_col = col
                         self.place_player("-", row, col)
+
             return (best, opt_row, opt_col)
+
         if player == "X":
-            worst = 10
+            worst = 100
             opt_row = -1
             opt_col = -1
             for row in range(3):
                 for col in range(3):
                     if self.is_valid_move(row, col):
+
                         self.place_player("X", row, col)
-                        score = self.minimax("O")[0]
+                        score = self.minimax("O", depth - 1)[0]
                         if worst > score:
                             worst = score
                             opt_row = row
                             opt_col = col
                         self.place_player("-", row, col)
+
             return (worst, opt_row, opt_col)
 
     def take_manual_turn(self, player):
@@ -99,16 +110,18 @@ class TicTacToe:
     def take_random_turn(self, player):
         x, y = -1, -1
         while not self.is_valid_move(x, y):
-            x, y = random.randint(0,3), random.randint(0,3)
+            x, y = random.randint(0, 3), random.randint(0, 3)
         self.board[x][y] = player
 
     def take_minimax_turn(self, player):
-        score, row, col = self.minimax(player)
+        depth = 4
+        score, row, col = self.minimax(player, depth)
         print(score, row, col)
         if self.is_valid_move(row, col):
             self.place_player(player, row, col)
         else:
-            print("error")
+            print("invalid move")
+            exit()
 
     def check_col_win(self, player):
         # TODO: Check col win
