@@ -5,17 +5,22 @@
 
 import sys
 
+# Modified TicTacToe code
+def perfect_board():
+    perfect = []
+    row1 = [1, 2, 3]
+    row2 = [4, 5, 6]
+    row3 = [7, 8, 0]
+    perfect.append(row1)
+    perfect.append(row2)
+    perfect.append(row3)
+    return perfect
+
 class SlidingPuzzle:
 
-    # Set up the board (modified TicTacToe code)
+    # Set up the board
     def __init__(self):
-        self.board = []
-        row1 = [1, 2, 3]
-        row2 = [4, 0, 5]
-        row3 = [6, 7, 8]
-        self.board.append(row1)
-        self.board.append(row2)
-        self.board.append(row3)
+        self.board = perfect_board()
 
     # Find the position of the 0 (blank space) on the board
     def find_0(self):
@@ -55,3 +60,9 @@ class SlidingPuzzle:
                 self.board[i][j + 1] = 0
             return True
         return False
+
+    def is_game_over(self):
+        if self.board == perfect_board():
+            return True
+        return False
+
