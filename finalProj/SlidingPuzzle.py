@@ -4,6 +4,7 @@
 # 4/25/22
 
 import sys
+from copy import deepcopy
 
 # Modified TicTacToe code
 def perfect_board():
@@ -66,3 +67,17 @@ class SlidingPuzzle:
             return True
         return False
 
+    def bfs(self, root):
+        queue = []
+        explored = []
+        while queue:
+            current = queue.pop(0)
+            if current == perfect_board():
+                return current
+            for move in ['u', 'd', 'l', 'r']:
+                if self.is_valid_move():
+                    board_copy = current
+                    board_copy.make_move(move)
+                    if board_copy not in explored:
+                        queue.append(board_copy)
+                        explored.append(board_copy)
