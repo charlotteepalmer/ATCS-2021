@@ -4,6 +4,8 @@
 # 4/25/22
 
 import sys
+import random
+from UI import *
 from copy import deepcopy
 
 # Modified TicTacToe code
@@ -22,6 +24,9 @@ class SlidingPuzzle:
     # Set up the board
     def __init__(self):
         self.board = perfect_board()
+        self.shuffle()
+        print_board(self)
+        self.explored = []
 
     # Find the position of the 0 (blank space) on the board
     def find_0(self):
@@ -34,13 +39,13 @@ class SlidingPuzzle:
     # Determine if the move is valid
     def is_valid_move(self, move):
         i, j = self.find_0()
-        if move == 'u' and j == 0:
+        if move == 'u' and i == 0:
             return False
-        if move == 'd' and j == 2:
+        if move == 'd' and i == 2:
             return False
-        if move == 'l' and i == 0:
+        if move == 'l' and j == 0:
             return False
-        if move == 'r' and i == 2:
+        if move == 'r' and j == 2:
             return False
         return True
 
@@ -67,7 +72,12 @@ class SlidingPuzzle:
             return True
         return False
 
-    def bfs(self, root):
+    def shuffle(self):
+        moves_list = ['u', 'd', 'l', 'r']
+        for i in range(40):
+            self.make_move(random.choice(moves_list))
+
+    def bfs(self, path, current):
         queue = []
         explored = []
         while queue:
