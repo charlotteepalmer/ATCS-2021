@@ -2,11 +2,12 @@
 # ATCS Final Project
 # Charlotte Palmer
 # 4/25/22
+# Showing improvement from Data Science final project
+# by creating functions instead of repeating code.
 
 import sys
 import random
 from UI import *
-from copy import deepcopy
 
 # Modified TicTacToe code
 def perfect_board():
@@ -21,14 +22,14 @@ def perfect_board():
 
 class SlidingPuzzle:
 
-    # Set up the board
+    # Sets up the board
     def __init__(self):
         self.board = perfect_board()
         self.shuffle()
         print_board(self)
         self.explored = []
 
-    # Find the position of the 0 (blank space) on the board
+    # Finds the position of the 0 (blank space) on the board
     def find_0(self):
         for i in range(3):
             for j in range(3):
@@ -36,7 +37,7 @@ class SlidingPuzzle:
                     return (i, j)
         sys.exit("Error: there is no 0 on the board.")
 
-    # Determine if the move is valid
+    # Determines if the move is valid
     def is_valid_move(self, move):
         i, j = self.find_0()
         if move == 'u' and i == 0:
@@ -49,6 +50,7 @@ class SlidingPuzzle:
             return False
         return True
 
+    # Moves the zero (the space) up, down, left, or right
     def make_move(self, move):
         i, j = self.find_0()
         if self.is_valid_move(move):
@@ -67,27 +69,27 @@ class SlidingPuzzle:
             return True
         return False
 
+    # Determines if the game is over
     def is_game_over(self):
         if self.board == perfect_board():
             return True
         return False
 
+    # Randomly shuffles the board
     def shuffle(self):
         moves_list = ['u', 'd', 'l', 'r']
         for i in range(40):
             self.make_move(random.choice(moves_list))
 
-    def bfs(self, path, current):
-        queue = []
-        explored = []
-        while queue:
-            current = queue.pop(0)
-            if current == perfect_board():
-                return current
-            for move in ['u', 'd', 'l', 'r']:
-                if self.is_valid_move():
-                    board_copy = current
-                    board_copy.make_move(move)
-                    if board_copy not in explored:
-                        queue.append(board_copy)
-                        explored.append(board_copy)
+    # Tried to used breadth first search, but it didn't work
+    def bfs(self, current_path, current_board):
+        if current_board == perfect_board():
+            return current_path
+        for move in ['u', 'd', 'l', 'r']:
+            if self.is_valid_move():
+                board_copy = current_board
+                board_copy.make_move(move)
+                if board_copy not in self.explored:
+                    path_copy = current_path
+                    path_copy.append(move)
+                    solution = self.bfs(path_copy, board_copy)
