@@ -92,7 +92,7 @@ class SlidingPuzzleBoard:
 
 # Depth-first-search AI
 def dfs(current_path, current_board, depth):
-    if depth > 12:
+    if depth > 20:
         return False
     print(current_path)
     current_board.print_board()
