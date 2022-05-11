@@ -8,8 +8,9 @@ board.print_board()
 
 solution = dfs([], board, 0)
 
-if solution:
+if solution or solution == []:
     print("I solved the SlidingPuzzle! The solution is:", solution)
+    print("Shuffled board:")
     board.print_board()
     for move in solution:
         print("The move was: " + move)
