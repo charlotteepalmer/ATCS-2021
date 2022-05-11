@@ -6,8 +6,13 @@ board.array = perfect_board()
 board.shuffle()
 board.print_board()
 
-solution = dfs([], board)
-print("solution is:", solution)
+solution = dfs([], board, 0)
+
+if solution:
+    print("The solution is:", solution)
+    board.print_board()
+    for move in solution:
+
 
 # Testing methods
 # print(game.find_0())

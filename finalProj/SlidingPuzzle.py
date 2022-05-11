@@ -10,9 +10,10 @@ import random
 from UI import *
 import copy
 
-# Global
+# Global variables
 explored = []
 
+# Creates a "perfect" (solved) board
 # Modified TicTacToe code
 def perfect_board():
     perfect = []
@@ -86,11 +87,13 @@ class SlidingPuzzleBoard:
     # Randomly shuffles the board
     def shuffle(self):
         moves_list = ['u', 'd', 'l', 'r']
-        for i in range(20):
+        for i in range(10):
             self.make_move(random.choice(moves_list))
 
-
-def dfs(current_path, current_board):
+# Depth-first-search AI
+def dfs(current_path, current_board, depth):
+    if depth > 12:
+        return False
     print(current_path)
     current_board.print_board()
     explored.append(current_board.array)
@@ -104,7 +107,7 @@ def dfs(current_path, current_board):
                 print(move)
                 path_copy = copy.deepcopy(current_path)
                 path_copy.append(move)
-                solution = dfs(path_copy, board_copy)
+                solution = dfs(path_copy, board_copy, depth + 1)
                 if solution:
                     return solution
     return False
